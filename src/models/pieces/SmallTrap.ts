@@ -1,7 +1,7 @@
-import { PeiceNames } from "../../constants/peices";
-import Peice from "./Piece";
-import Board from "../Board";
-import Coordinate from "../Coordinate";
+import { PeiceNames } from "../../constants/peices.js";
+import Peice from "./Piece.js";
+import Board from "../Board.js";
+import Coordinate from "../Coordinate.js";
 
 export default class SmallTrap extends Peice {
   constructor() {

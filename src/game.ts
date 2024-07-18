@@ -1,11 +1,11 @@
-import Board from "./models/Board";
-import LargePowerup from "./models/pieces/LargePowerup";
-import LargeTrap from "./models/pieces/LargeTrap";
-import LargeTreasure from "./models/pieces/LargeTreasure";
-import SmallPowerup from "./models/pieces/SmallPowerup";
-import SmallTrap from "./models/pieces/SmallTrap";
-import SmallTreasure from "./models/pieces/SmallTreasure";
-import Wall from "./models/pieces/Wall";
+import Board from "./models/Board.js";
+import LargePowerup from "./models/pieces/LargePowerup.js";
+import LargeTrap from "./models/pieces/LargeTrap.js";
+import LargeTreasure from "./models/pieces/LargeTreasure.js";
+import SmallPowerup from "./models/pieces/SmallPowerup.js";
+import SmallTrap from "./models/pieces/SmallTrap.js";
+import SmallTreasure from "./models/pieces/SmallTreasure.js";
+import Wall from "./models/pieces/Wall.js";
 
 export default function game() {
   const board = new Board(7, 7);

@@ -1,7 +1,7 @@
-import { PeiceNames } from "../../constants/peices";
-import Board from "../Board";
-import Coordinate from "../Coordinate";
-import Peice from "./Piece";
+import { PeiceNames } from "../../constants/peices.js";
+import Board from "../Board.js";
+import Coordinate from "../Coordinate.js";
+import Peice from "./Piece.js";
 
 export default class LargePowerup extends Peice {
   constructor() {

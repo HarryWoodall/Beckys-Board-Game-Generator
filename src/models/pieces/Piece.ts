@@ -1,5 +1,5 @@
-import Board from "../Board";
-import Coordinate from "../Coordinate";
+import Board from "../Board.js";
+import Coordinate from "../Coordinate.js";
 
 export default abstract class Peice {
   name: string;

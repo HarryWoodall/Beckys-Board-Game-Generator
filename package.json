@@ -7,6 +7,7 @@
     "start": "tsx --watch src/server.ts",
     "build": "tsc"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",

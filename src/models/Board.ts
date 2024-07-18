@@ -1,6 +1,6 @@
-import BoardTile from "./BoardTile";
-import Coordinate from "./Coordinate";
-import Peice from "./pieces/Piece";
+import BoardTile from "./BoardTile.js";
+import Coordinate from "./Coordinate.js";
+import Peice from "./pieces/Piece.js";
 
 export default class Board {
   width: number;
