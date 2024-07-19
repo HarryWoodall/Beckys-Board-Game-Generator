@@ -1,16 +1,13 @@
 let game;
-const gridTileSize = 50;
+const gridTileSize = 75;
 
 function preload() {
-  // Get the most recent earthquake in the database
   fetch("/game")
     .then((data) => data.json())
     .then((json) => (game = json));
 }
 
-function setup() {
-  createCanvas(400, 400);
-}
+function setup() {}
 
 function draw() {
   if (game) {
@@ -27,7 +24,8 @@ function setUpBoard() {
 
   for (let y = 0; y < game.length; y++) {
     for (let x = 0; x < game.length; x++) {
-      fill(200, 200, 200);
+      noFill();
+      strokeWeight(3);
       square(x * gridTileSize, y * gridTileSize, gridTileSize);
 
       if (game[y][x].content.length > 0) {
@@ -44,7 +42,9 @@ function setUpBoard() {
 function placePeice(name, x, y) {
   switch (name) {
     case "WALL":
-      fill(100, 100, 100);
+      strokeWeight(2);
+      noFill();
+      // fill(100, 100, 100);
       square(x * gridTileSize + gridTileSize / 4, y * gridTileSize + gridTileSize / 4, gridTileSize / 2);
       break;
     case "SMALL_TRAP":
@@ -64,6 +64,7 @@ function placePeice(name, x, y) {
       circle(x * gridTileSize + gridTileSize / 2, y * gridTileSize + gridTileSize / 2, gridTileSize / 2);
       break;
     case "SMALL_POWERUP":
+      strokeWeight(1);
       const smallPowerupTextSize = 15;
       textSize(smallPowerupTextSize);
       text("p", x * gridTileSize + (gridTileSize / 2 - smallPowerupTextSize / 2), y * gridTileSize + (gridTileSize / 2 + smallPowerupTextSize / 2));

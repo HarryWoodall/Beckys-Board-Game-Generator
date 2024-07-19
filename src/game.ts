@@ -6,6 +6,7 @@ import SmallPowerup from "./models/pieces/SmallPowerup.js";
 import SmallTrap from "./models/pieces/SmallTrap.js";
 import SmallTreasure from "./models/pieces/SmallTreasure.js";
 import Wall from "./models/pieces/Wall.js";
+import { createSketch } from "./sketch.js";
 
 export default function game() {
   const board = new Board(7, 7);
@@ -31,5 +32,12 @@ export default function game() {
 
   board.addPeice(new LargePowerup());
 
-  return board.tiles;
+  const image = createSketch(board.tiles);
+
+  const payload = {
+    tiles: board.tiles,
+    image: image,
+  };
+
+  return payload;
 }
