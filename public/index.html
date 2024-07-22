@@ -9,11 +9,171 @@
   <body>
     <main class="flex flex-col items-center w-full">
       <h1 class="text-3xl mb-10 mt-10">Becky's board game generator</h1>
-      <img id="main-image" src="sketches/currentSketch.png" />
-      <button class="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="getGame()">Refresh Board</button>
-      <a href="/currentImage" class="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download current board</a>
-      <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.js"></script> -->
-      <!-- <script src="scripts/sketch.js"></script> -->
+      <div class="mx-5">
+        <p id="error-message" class="text-red-500 font-bold text-xl" hidden>Unknown error, see developer tools for more info</p>
+        <img id="main-image" src="sketches/currentSketch.png" />
+      </div>
+
+      <div class="bg-gray-600 m-5 mt-10 p-5 rounded">
+        <h2 class="text-xl text-white font-bold">Dimentions</h2>
+        <div class="flex flex-col" onsubmit="getGame(event)">
+          <!-- Width and height -->
+          <div class="flex gap-10 justify-between">
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Width</label>
+              <div class="relative flex items-center">
+                <input
+                  type="text"
+                  id="width-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="width"
+                  value="7"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Height</label>
+              <div class="relative flex items-center">
+                <input
+                  type="text"
+                  id="height-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="height"
+                  value="7"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <h2 class="text-xl text-white mt-8 font-bold">Peice Count</h2>
+          <!-- Peice ammounts -->
+          <div class="flex gap-2 max-w-[32rem] justify-center flex-wrap">
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Walls</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="walls-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="walls"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Small Traps</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="small-traps-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="small-traps"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Large Traps</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="large-traps-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="large-traps"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Small Treasure</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="small-treasure-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="small-treasure"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Large Treasure</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="large-treasure-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="large-treasure"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Small Powerups</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="small-powerups-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="small-powerups"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label for="quantity-input" class="mt-2 text-sm text-gray-300 dark:text-gray-400">Large Powerups</label>
+              <div class="relative flex items-center max-w-[6rem]">
+                <input
+                  type="text"
+                  id="large-powerups-input"
+                  data-input-counter
+                  aria-describedby="helper-text-explanation"
+                  class="bg-gray-700 border-x-0 rounded-lg border-gray-300 h-11 text-center text-white text-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5"
+                  name="large-powerups"
+                  value="1"
+                  numeric
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <button class="mt-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="getGame()">Refresh Board</button>
+          <a href="/currentImage" class="mt-5 text-center bg-orange-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download current board</a>
+        </div>
+      </div>
       <script src="scripts/main.js"></script>
     </main>
   </body>

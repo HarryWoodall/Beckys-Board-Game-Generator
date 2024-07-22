@@ -1,3 +1,4 @@
+import { findRandomEmptyBoardTile } from "../../helpers/tileLocator.js";
 import { PeiceNames } from "../../constants/peices.js";
 import Board from "../Board.js";
 import Coordinate from "../Coordinate.js";
@@ -9,6 +10,6 @@ export default class SmallTreasure extends Peice {
   }
 
   findTile(board: Board): Coordinate {
-    return board.getRandomEmptyTile().location;
+    return findRandomEmptyBoardTile(board);
   }
 }

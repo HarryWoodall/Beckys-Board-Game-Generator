@@ -25,7 +25,7 @@ function setUpBoard(p) {
   let squaresSet = 0;
 
   for (let y = 0; y < game.length; y++) {
-    for (let x = 0; x < game.length; x++) {
+    for (let x = 0; x < game[0].length; x++) {
       p.fill(255);
       p.strokeWeight(3);
       p.square(x * gridTileSize, y * gridTileSize, gridTileSize);
@@ -42,7 +42,6 @@ function setUpBoard(p) {
 }
 
 function placePeice(p, name, x, y) {
-  console.log(`${name} at ${x}, ${y}`);
   switch (name) {
     case "WALL":
       p.strokeWeight(2);

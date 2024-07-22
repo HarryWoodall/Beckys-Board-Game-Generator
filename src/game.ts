@@ -8,29 +8,68 @@ import SmallTreasure from "./models/pieces/SmallTreasure.js";
 import Wall from "./models/pieces/Wall.js";
 import { createSketch } from "./sketch.js";
 
-export default function game() {
-  const board = new Board(7, 7);
+export type GameSettings = {
+  dimentions: {
+    width: number;
+    height: number;
+  };
+  pieceCounts: {
+    wall: number;
+    smallTrap: number;
+    largeTrap: number;
+    smallTreasure: number;
+    largeTreasure: number;
+    smallPowerup: number;
+    largePowerup: number;
+  };
+};
 
-  // board.addPeice(new Wall());
-  // board.addPeice(new Wall());
-  // board.addPeice(new Wall());
-  // board.addPeice(new Wall());
-  board.addPeice(new Wall());
+export const defaultSettings: GameSettings = {
+  dimentions: {
+    width: 7,
+    height: 7,
+  },
+  pieceCounts: {
+    wall: 1,
+    smallTrap: 1,
+    largeTrap: 1,
+    smallTreasure: 1,
+    largeTreasure: 1,
+    smallPowerup: 1,
+    largePowerup: 1,
+  },
+};
 
-  // board.addPeice(new SmallTrap());
-  // board.addPeice(new SmallTrap());
-  // board.addPeice(new SmallTrap());
-  board.addPeice(new SmallTrap());
+export default function game(settings: GameSettings = defaultSettings) {
+  const board = new Board(settings.dimentions.width, settings.dimentions.height);
 
-  board.addPeice(new LargeTrap());
+  for (let i = 0; i < settings.pieceCounts.wall; i++) {
+    board.addPeice(new Wall());
+  }
 
-  board.addPeice(new SmallTreasure());
+  for (let i = 0; i < settings.pieceCounts.smallTrap; i++) {
+    board.addPeice(new SmallTrap());
+  }
 
-  board.addPeice(new LargeTreasure());
+  for (let i = 0; i < settings.pieceCounts.largeTrap; i++) {
+    board.addPeice(new LargeTrap());
+  }
 
-  board.addPeice(new SmallPowerup());
+  for (let i = 0; i < settings.pieceCounts.smallTreasure; i++) {
+    board.addPeice(new SmallTreasure());
+  }
 
-  board.addPeice(new LargePowerup());
+  for (let i = 0; i < settings.pieceCounts.largeTreasure; i++) {
+    board.addPeice(new LargeTreasure());
+  }
+
+  for (let i = 0; i < settings.pieceCounts.smallPowerup; i++) {
+    board.addPeice(new SmallPowerup());
+  }
+
+  for (let i = 0; i < settings.pieceCounts.largePowerup; i++) {
+    board.addPeice(new LargePowerup());
+  }
 
   const image = createSketch(board.tiles);
 

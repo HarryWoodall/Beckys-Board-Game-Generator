@@ -54,11 +54,12 @@ export default class Board {
     const emptyTiles = this.getEmptyTiles();
 
     if (emptyTiles.length == 0) return null;
+
     return emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
   }
 
   addPeice(peice: Peice) {
     const location = peice.findTile(this);
-    this.getTile(location).content.push(peice);
+    if (location) this.getTile(location).content.push(peice);
   }
 }

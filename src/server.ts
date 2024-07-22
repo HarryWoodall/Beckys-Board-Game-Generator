@@ -1,7 +1,7 @@
-import express from "express";
+import express, { Request } from "express";
 import path from "path";
 import fs from "fs";
-import game from "./game.js";
+import game, { GameSettings } from "./game.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -32,8 +32,42 @@ app.get("/currentImageFileName", (req, res) => {
   }
 });
 
-app.get("/game", (req, res) => {
-  res.send(game());
+interface GameRequestQuery {
+  width: number;
+  height: number;
+  walls: number;
+  smallTraps: number;
+  largeTraps: number;
+  smallTreasure: number;
+  largeTreasure: number;
+  smallPowerups: number;
+  largePowerups: number;
+}
+
+app.get("/game", (req: Request<{}, {}, {}, GameRequestQuery>, res) => {
+  const settings: GameSettings = {
+    dimentions: {
+      width: req.query.width,
+      height: req.query.height,
+    },
+    pieceCounts: {
+      wall: req.query.walls,
+      smallTrap: req.query.smallTraps,
+      largeTrap: req.query.largeTraps,
+      smallTreasure: req.query.smallTreasure,
+      largeTreasure: req.query.largeTreasure,
+      smallPowerup: req.query.smallPowerups,
+      largePowerup: req.query.largePowerups,
+    },
+  };
+
+  try {
+    const result = game(settings);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
 });
 
 app.listen(port, () => {
