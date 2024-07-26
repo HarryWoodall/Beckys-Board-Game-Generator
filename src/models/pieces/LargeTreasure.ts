@@ -10,6 +10,10 @@ export default class LargeTreasure extends Peice {
   }
 
   findTile(board: Board): Coordinate {
-    return findRandomEmptyBoardTile(board);
+    let validTiles = board.getEmptyTiles();
+    validTiles = validTiles.filter((tile) => !board.isTileNextToEntrance(tile));
+    validTiles = validTiles.filter((tile) => !board.isTileNextToType(tile, [PeiceNames.SMALL_TREASURE, PeiceNames.LARGE_TREASURE]));
+
+    return findRandomEmptyBoardTile(board, validTiles);
   }
 }

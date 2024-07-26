@@ -1,3 +1,5 @@
+import PeiceFactory from "./factories/PeiceFactory.js";
+import { imageKeySketch } from "./imageKey.js";
 import Board from "./models/Board.js";
 import LargePowerup from "./models/pieces/LargePowerup.js";
 import LargeTrap from "./models/pieces/LargeTrap.js";
@@ -22,6 +24,9 @@ export type GameSettings = {
     smallPowerup: number;
     largePowerup: number;
   };
+  maxIterations: number;
+  smallTrapMultiplier: number;
+  largeTrapMultiplier: number;
 };
 
 export const defaultSettings: GameSettings = {
@@ -38,22 +43,50 @@ export const defaultSettings: GameSettings = {
     smallPowerup: 1,
     largePowerup: 1,
   },
+  maxIterations: 100,
+  smallTrapMultiplier: 3,
+  largeTrapMultiplier: 3,
 };
 
-export default function game(settings: GameSettings = defaultSettings) {
+export default function game(settings: GameSettings = defaultSettings, boardString?: string) {
   const board = new Board(settings.dimentions.width, settings.dimentions.height);
 
-  for (let i = 0; i < settings.pieceCounts.wall; i++) {
-    board.addPeice(new Wall());
+  let currentIteration = 0;
+  const ignoreInvalidBoard = false;
+
+  if (boardString) {
+    setupFromString(board, boardString);
+  } else {
+    do {
+      addPeicesToBoard(board, settings);
+      currentIteration++;
+    } while (!board.validate(settings) && currentIteration < settings.maxIterations);
+
+    if (board.validate(settings) || ignoreInvalidBoard) {
+      console.log(`valid board after ${currentIteration} iterations`);
+    } else {
+      console.log(`failed to find a valid board: exiting...`);
+      return {
+        error: "No valid board states found",
+      };
+    }
   }
 
-  for (let i = 0; i < settings.pieceCounts.smallTrap; i++) {
-    board.addPeice(new SmallTrap());
-  }
+  imageKeySketch(board.tiles);
+  const image = createSketch(board.tiles);
 
-  for (let i = 0; i < settings.pieceCounts.largeTrap; i++) {
-    board.addPeice(new LargeTrap());
-  }
+  const payload = {
+    tiles: board.tiles,
+    boardString: board.convertToString(),
+    image: image,
+    iteration: currentIteration,
+  };
+
+  return payload;
+}
+
+function addPeicesToBoard(board: Board, settings: GameSettings) {
+  board.resetTiles();
 
   for (let i = 0; i < settings.pieceCounts.smallTreasure; i++) {
     board.addPeice(new SmallTreasure());
@@ -63,6 +96,18 @@ export default function game(settings: GameSettings = defaultSettings) {
     board.addPeice(new LargeTreasure());
   }
 
+  for (let i = 0; i < settings.pieceCounts.smallTrap; i++) {
+    board.addPeice(new SmallTrap(settings.smallTrapMultiplier));
+  }
+
+  for (let i = 0; i < settings.pieceCounts.largeTrap; i++) {
+    board.addPeice(new LargeTrap(settings.largeTrapMultiplier));
+  }
+
+  for (let i = 0; i < settings.pieceCounts.wall; i++) {
+    board.addPeice(new Wall());
+  }
+
   for (let i = 0; i < settings.pieceCounts.smallPowerup; i++) {
     board.addPeice(new SmallPowerup());
   }
@@ -70,13 +115,20 @@ export default function game(settings: GameSettings = defaultSettings) {
   for (let i = 0; i < settings.pieceCounts.largePowerup; i++) {
     board.addPeice(new LargePowerup());
   }
+}
 
-  const image = createSketch(board.tiles);
+function setupFromString(board: Board, gameString: string) {
+  const width = parseInt(gameString[0]);
+  const height = parseInt(gameString[1]);
+  const boardPiecesString = gameString.substring(2);
 
-  const payload = {
-    tiles: board.tiles,
-    image: image,
-  };
+  const peiceFactory = new PeiceFactory();
+  let currentPeiceIndex = 0;
 
-  return payload;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      board.addPeice(peiceFactory.createPeice(boardPiecesString[currentPeiceIndex]), { x: x, y: y });
+      currentPeiceIndex++;
+    }
+  }
 }

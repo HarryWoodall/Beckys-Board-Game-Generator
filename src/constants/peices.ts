@@ -7,3 +7,14 @@ export const PeiceNames = {
   SMALL_POWERUP: "SMALL_POWERUP",
   LARGE_POWERUP: "LARGE_POWERUP",
 };
+
+export const PieceStringSymbols = {
+  EMPTY: "A",
+  WALL: "B",
+  SMALL_TRAP: "C",
+  LARGE_TRAP: "D",
+  SMALL_TREASURE: "E",
+  LARGE_TREASURE: "F",
+  SMALL_POWERUP: "G",
+  LARGE_POWERUP: "H",
+};

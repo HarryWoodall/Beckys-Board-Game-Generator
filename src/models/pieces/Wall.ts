@@ -10,6 +10,7 @@ export default class Wall extends Peice {
   }
 
   findTile(board: Board): Coordinate {
-    return findRandomEmptyBoardTile(board);
+    const ord = findRandomEmptyBoardTile(board);
+    return ord;
   }
 }

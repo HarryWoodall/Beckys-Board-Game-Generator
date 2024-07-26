@@ -7,51 +7,43 @@ import BoardTile from "./models/BoardTile";
 import Coordinate from "./models/Coordinate";
 import { PeiceNames } from "./constants/peices";
 
-let game: BoardTile[][] = undefined;
 const gridTileSize = 75;
+const bufferSize = 50;
 
 function sketch(p) {
-  p.setup = () => {};
-  p.draw = () => {
-    if (game.length > 0) {
-      setUpBoard(p);
-      p.noLoop();
-    }
+  p.setup = () => {
+    setUpBoard(p);
   };
+  p.draw = () => {};
 }
 
 function setUpBoard(p) {
-  p.createCanvas(game[0].length * gridTileSize, game.length * gridTileSize);
+  const length = 7;
+  p.createCanvas(length * gridTileSize + length * bufferSize, gridTileSize * 1.5);
+  p.background(255);
+  p.strokeWeight(3);
+  p.stroke(0);
+  p.textSize(16);
+  p.textAlign("center");
 
   let squaresSet = 0;
 
-  for (let y = 0; y < game.length; y++) {
-    for (let x = 0; x < game[0].length; x++) {
-      p.strokeWeight(3);
+  placePeice(p, PeiceNames.WALL, 0, 0);
+  placePeice(p, PeiceNames.SMALL_TRAP, 1, 0);
+  placePeice(p, PeiceNames.LARGE_TRAP, 2, 0);
+  placePeice(p, PeiceNames.SMALL_TREASURE, 3, 0);
+  placePeice(p, PeiceNames.LARGE_TREASURE, 4, 0);
+  placePeice(p, PeiceNames.SMALL_POWERUP, 5, 0);
+  placePeice(p, PeiceNames.LARGE_POWERUP, 6, 0);
 
-      if (game[y][x].isEntry) {
-        p.fill(255, 100, 100, 80);
-      } else if (game[y][x].highlight1) {
-        p.fill(0, 175, 0, 230);
-      } else if (game[y][x].highlight2) {
-        p.fill(175, 0, 150, 200);
-      } else if (game[y][x].debug) {
-        p.fill(75, 175, 75, 80);
-      } else {
-        p.fill(255);
-      }
-
-      p.square(x * gridTileSize, y * gridTileSize, gridTileSize);
-
-      if (game[y][x].content.length > 0) {
-        for (const item of game[y][x].content) {
-          p.fill(100, 100, 100);
-          placePeice(p, item.name, x, y);
-        }
-      }
-      squaresSet++;
-    }
-  }
+  p.strokeWeight(1);
+  drawText(p, "Wall", 0);
+  drawText(p, "Small Trap", 1);
+  drawText(p, "Large Trap", 2);
+  drawText(p, "Small Treasure", 3);
+  drawText(p, "Large Treasure", 4);
+  drawText(p, "Small Powerup", 5);
+  drawText(p, "Large Powerup", 6);
 }
 
 function placePeice(p, name, x, y) {
@@ -81,15 +73,22 @@ function placePeice(p, name, x, y) {
   }
 }
 
+function drawText(p: any, text: string, x: number) {
+  p.text(text, x * gridTileSize + gridTileSize / 2 + bufferSize * x + bufferSize / 2, gridTileSize + gridTileSize / 2.5);
+}
+
 function drawWall(p, pos: Coordinate) {
   p.strokeWeight(4);
-  p.line(pos.x * gridTileSize, pos.y * gridTileSize, pos.x * gridTileSize + gridTileSize, pos.y * gridTileSize + gridTileSize);
-  p.line(pos.x * gridTileSize + gridTileSize, pos.y * gridTileSize, pos.x * gridTileSize, pos.y * gridTileSize + gridTileSize);
+  p.push();
+  p.translate(pos.x * gridTileSize + bufferSize * pos.x + bufferSize / 2, pos.y * gridTileSize);
+  p.line(0, 0, gridTileSize, gridTileSize);
+  p.line(gridTileSize, 0, 0, gridTileSize);
+  p.pop();
 }
 
 function drawTrap(p, pos: Coordinate, isLarge: boolean) {
   p.push();
-  p.translate(pos.x * gridTileSize + gridTileSize / 2, pos.y * gridTileSize + gridTileSize / 2);
+  p.translate(pos.x * gridTileSize + gridTileSize / 2 + bufferSize * pos.x + bufferSize / 2, pos.y * gridTileSize + gridTileSize / 2);
   p.strokeWeight(4);
   p.noFill();
 
@@ -109,7 +108,7 @@ function drawTrap(p, pos: Coordinate, isLarge: boolean) {
 
 function drawTreasure(p, pos: Coordinate, isLarge: boolean) {
   p.push();
-  p.translate(pos.x * gridTileSize + gridTileSize / 2, pos.y * gridTileSize + gridTileSize / 2);
+  p.translate(pos.x * gridTileSize + gridTileSize / 2 + bufferSize * pos.x + bufferSize / 2, pos.y * gridTileSize + gridTileSize / 2);
 
   p.noFill();
   p.scale(0.6);
@@ -129,7 +128,7 @@ function drawTreasure(p, pos: Coordinate, isLarge: boolean) {
 
 function drawPowerup(p, pos: Coordinate, isLarge: boolean) {
   p.push();
-  p.translate(pos.x * gridTileSize + gridTileSize / 2, pos.y * gridTileSize + gridTileSize / 2);
+  p.translate(pos.x * gridTileSize + gridTileSize / 2 + bufferSize * pos.x + bufferSize / 2, pos.y * gridTileSize + gridTileSize / 2);
 
   p.strokeWeight(4);
   p.noFill();
@@ -171,20 +170,11 @@ function getTrianglePoints() {
   return [point1, point2, point3];
 }
 
-export function createSketch(tiles) {
-  console.log("creating sketch\n");
-  game = tiles;
-
-  const sketchDir = "./public/sketches";
-
-  const images = fs.readdirSync(sketchDir);
-
-  for (let image of images) {
-    fs.unlinkSync(path.join(sketchDir, image));
-  }
+export function imageKeySketch(tiles) {
+  const sketchDir = "./public/images";
 
   let p5Instance = p5.createSketch(sketch);
-  const imageName = `currentSketch-${crypto.randomUUID()}.png`;
+  const imageName = `imageKeySketch.png`;
   p5Instance.saveCanvas(p5Instance, path.join(sketchDir, imageName));
   return path.join("sketches", imageName);
 }

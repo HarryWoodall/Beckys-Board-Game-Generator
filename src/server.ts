@@ -1,7 +1,7 @@
 import express, { Request } from "express";
 import path from "path";
 import fs from "fs";
-import game, { GameSettings } from "./game.js";
+import game, { defaultSettings, GameSettings } from "./game.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -42,6 +42,9 @@ interface GameRequestQuery {
   largeTreasure: number;
   smallPowerups: number;
   largePowerups: number;
+  maxSearchIterations: number;
+  smallTrapMultiplier: number;
+  largeTrapMultiplier: number;
 }
 
 app.get("/game", (req: Request<{}, {}, {}, GameRequestQuery>, res) => {
@@ -59,10 +62,31 @@ app.get("/game", (req: Request<{}, {}, {}, GameRequestQuery>, res) => {
       smallPowerup: req.query.smallPowerups,
       largePowerup: req.query.largePowerups,
     },
+    maxIterations: req.query.maxSearchIterations,
+    smallTrapMultiplier: req.query.smallTrapMultiplier,
+    largeTrapMultiplier: req.query.largeTrapMultiplier,
   };
 
   try {
     const result = game(settings);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+interface GameStringRequestQuery {
+  gameString: string;
+}
+
+app.get("/gameString", (req: Request<{}, {}, {}, GameStringRequestQuery>, res) => {
+  try {
+    const gameSettings = defaultSettings;
+    gameSettings.dimentions.width = parseInt(req.query.gameString[0]);
+    gameSettings.dimentions.height = parseInt(req.query.gameString[1]);
+
+    const result = game(gameSettings, req.query.gameString);
     res.send(result);
   } catch (error) {
     console.log(error);
