@@ -3,9 +3,9 @@ import p5 from "node-p5";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import BoardTile from "./models/BoardTile";
-import Coordinate from "./models/Coordinate";
-import { PeiceNames } from "./constants/peices";
+import BoardTile from "./models/BoardTile.js";
+import Coordinate from "./models/Coordinate.js";
+import { PeiceNames } from "./constants/peices.js";
 
 const gridTileSize = 75;
 const bufferSize = 50;

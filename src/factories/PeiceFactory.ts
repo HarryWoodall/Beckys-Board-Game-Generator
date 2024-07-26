@@ -1,11 +1,11 @@
-import Wall from "../models/pieces/Wall";
-import { PieceStringSymbols } from "../constants/peices";
-import SmallTrap from "../models/pieces/SmallTrap";
-import LargeTrap from "../models/pieces/LargeTrap";
-import SmallTreasure from "../models/pieces/SmallTreasure";
-import LargeTreasure from "../models/pieces/LargeTreasure";
-import SmallPowerup from "../models/pieces/SmallPowerup";
-import LargePowerup from "../models/pieces/LargePowerup";
+import Wall from "../models/pieces/Wall.js";
+import { PieceStringSymbols } from "../constants/peices.js";
+import SmallTrap from "../models/pieces/SmallTrap.js";
+import LargeTrap from "../models/pieces/LargeTrap.js";
+import SmallTreasure from "../models/pieces/SmallTreasure.js";
+import LargeTreasure from "../models/pieces/LargeTreasure.js";
+import SmallPowerup from "../models/pieces/SmallPowerup.js";
+import LargePowerup from "../models/pieces/LargePowerup.js";
 
 export default class PeiceFactory {
   createPeice(peice: string) {
